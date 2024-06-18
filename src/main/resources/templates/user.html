@@ -7,5 +7,10 @@
 <body>
 <h1>Welcome, <span th:text="${username}"></span>!</h1>
 <p>User, welcome to the Spring Boot security page!</p>
+<br>
+<form th:action="@{/logout}" method="post">
+    <label>Выйти из аккаунта:</label>
+    <input type="submit" value="Logout"/>
+</form>
 </body>
 </html>
