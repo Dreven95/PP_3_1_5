@@ -26,8 +26,12 @@ public class UserController {
 
     private RoleService roleService;
 
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -35,7 +39,7 @@ public class UserController {
     }
 
     @Autowired
-    public void setRoleDAO(RoleService roleService) {
+    public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
     }
 
@@ -57,13 +61,6 @@ public class UserController {
 
         return "index";
     }
-
-//    @PostMapping("/admin/saveUser")
-//    public String saveUser(@ModelAttribute("user") User user) {
-//        userService.save(user);
-//
-//        return "redirect:/admin";
-//    }
 
     @PostMapping("/admin/saveUser")
     public String saveUser(@ModelAttribute User user, @RequestParam("roles") List<Integer> roleIds) {
