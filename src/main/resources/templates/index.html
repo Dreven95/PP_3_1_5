@@ -43,9 +43,6 @@
             <input type="text" th:field="*{password}" id="password">
             <br>
             <label for="roles">Выберите роли: </label>
-<!--            <select id="roles" name="roles" multiple>-->
-<!--                <option th:each="role : ${allRoles}" th:value="${role}" th:text="${role.name}"></option>-->
-<!--            </select>-->
             <select id="roles" name="roles" multiple required>
                 <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}"></option>
             </select>

@@ -12,6 +12,17 @@
       <label for="name">Введите имя: </label>
       <input type="hidden" th:field="*{id}" />
       <input type="text" th:field="*{name}" id="name">
+      <br>
+      <label for="name">Введите почту: </label>
+      <input type="text" th:field="*{email}" id="email">
+      <br>
+      <label for="name">Введите пароль: </label>
+      <input type="text" th:field="*{password}" id="password">
+      <br>
+      <label for="roles">Выберите роли: </label>
+      <select id="roles" name="roles" multiple required>
+        <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}"></option>
+      </select>
       <input type="submit" value="Изменить">
     </form>
   </section>
