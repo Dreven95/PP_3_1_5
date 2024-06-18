@@ -1,11 +1,57 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
-
-
+<div class="container">
+    <section class="main">
+        <h2 class="main__title"> All users</h2>
+        <table class="main__table">
+            <thead class="main__table-header">
+            <tr class="main__table-rows">
+                <th class="main__table-cell">Id</th>
+                <th class="main__table-cell">Name</th>
+            </tr>
+            </thead>
+            <tbody class="main__table-body">
+            <tr th:each="user : ${allUsers}" class="main__table-columns">
+                <td th:text="${user.id}" class="main__table-cell"></td>
+                <td th:text="${user.name}" class="main__table-cell"></td>
+                <td class="main__table-cell">
+                    <form th:action="@{/admin/deleteUser}" method="post" style="display:inline;">
+                        <input type="hidden" th:name="userId" th:value="${user.id}" />
+                        <input type="submit" value="Delete" />
+                    </form>
+                    <form th:action="@{/admin/updateUserPage}" method="post" style="display:inline;">
+                        <input type="hidden" th:name="userId" th:value="${user.id}" />
+                        <input type="submit" value="Edit" />
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <form th:method="POST" th:action="@{/admin/saveUser}" th:object="${user}">
+            <label for="name">Введите имя: </label>
+            <input type="text" th:field="*{name}" id="name">
+            <br>
+            <label for="name">Введите почту: </label>
+            <input type="text" th:field="*{email}" id="email">
+            <br>
+            <label for="name">Введите пароль: </label>
+            <input type="text" th:field="*{password}" id="password">
+            <br>
+            <label for="roles">Выберите роли: </label>
+<!--            <select id="roles" name="roles" multiple>-->
+<!--                <option th:each="role : ${allRoles}" th:value="${role}" th:text="${role.name}"></option>-->
+<!--            </select>-->
+            <select id="roles" name="roles" multiple required>
+                <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}"></option>
+            </select>
+            <input type="submit" value="Создать!">
+        </form>
+    </section>
+</div>
 </body>
 </html>
