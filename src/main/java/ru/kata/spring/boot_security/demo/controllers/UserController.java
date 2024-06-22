@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String userPage(Model model) {
+    public String openUserPage(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("username", username);
 

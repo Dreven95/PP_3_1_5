@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User extends CustomUserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -58,15 +58,14 @@ public class User extends CustomUserDetails {
         this.name = name;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
@@ -75,17 +74,12 @@ public class User extends CustomUserDetails {
         this.password = password;
     }
 
-    @Override
-    public String getUsername() {
-        return email;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
