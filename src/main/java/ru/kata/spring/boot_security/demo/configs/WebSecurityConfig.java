@@ -18,17 +18,10 @@ import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
 
-    private UserServiceImpl userServiceImpl;
-
     public CustomUserDetailsService customUserDetailsService;
 
     public WebSecurityConfig(SuccessUserHandler successUserHandler) {
         this.successUserHandler = successUserHandler;
-    }
-
-    @Autowired
-    public void setUserServiceImpl(@Lazy UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
     }
 
     @Autowired
@@ -55,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin().successHandler(successUserHandler)
                 .and()
@@ -64,11 +57,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login")
                 .permitAll();
     }
-
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        return userServiceImpl;
-//    }
 
 }

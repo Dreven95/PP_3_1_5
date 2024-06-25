@@ -11,7 +11,7 @@ import ru.kata.spring.boot_security.demo.security.CustomUserDetailsService;
 import java.util.List;
 
 @Service
-public class UserServiceImpl extends CustomUserDetailsService implements UserService {
+public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
 

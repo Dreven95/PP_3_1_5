@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Role extends CustomGrantedAuthority {
+public class Role {
     @Id
     @Column(name = "role_id")
     private int id;
@@ -53,11 +53,6 @@ public class Role extends CustomGrantedAuthority {
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }
-
-    @Override
-    public String getAuthority() {
-        return getName();
     }
 
     @Override
