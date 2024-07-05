@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleServiceImpl;
@@ -26,6 +27,8 @@ public class AdminController {
 
     private RoleServiceImpl roleServiceImpl;
 
+    private UserDAO userDAO;
+
     @Autowired
     public void setUserService(UserServiceImpl userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
@@ -36,17 +39,24 @@ public class AdminController {
         this.roleServiceImpl = roleServiceImpl;
     }
 
+    @Autowired
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
     @GetMapping("/admin")
     public String showAllUsers(Model model) {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        Collection<? extends GrantedAuthority> currentUserRoles = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+//        Collection<? extends GrantedAuthority> currentUserRoles = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        User currentUser = userDAO.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         List<User> allUsers = userServiceImpl.getAllUsers();
         List<Role> allRoles = roleServiceImpl.getAllRoles();
         model.addAttribute("allUsers", allUsers);
         model.addAttribute("allRoles", allRoles);
         model.addAttribute("user", new User());
-        model.addAttribute("currentUsername", currentUsername);
-        model.addAttribute("currentUserRoles", currentUserRoles);
+//        model.addAttribute("currentUsername", currentUsername);
+//        model.addAttribute("currentUserRoles", currentUserRoles);
+        model.addAttribute("currentUser", currentUser);
 
         return "index";
     }

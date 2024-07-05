@@ -9,6 +9,18 @@
 </head>
 <body>
     <div class="container">
+        <nav class="navbar sticky-top navbar-light bg-light">
+            <div th:object="${currentUser}" class="container-fluid d-flex justify-content-between align-items-center">
+                <div>
+                    <span th:text="${currentUser.email}"></span> with roles: <span th:each="role :${currentUser.roles}" th:text="${role.name}"></span>
+                </div>
+                <div>
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" value="Logout"/>
+                    </form>
+                </div>
+            </div>
+        </nav>
         <section class="main">
             <div class="d-flex align-items-start">
                 <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -17,13 +29,28 @@
                 </div>
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="tab-pane fade show active" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
-                        <h1>Welcome, <span th:text="${username}"></span>!</h1>
-                        <p>User, welcome to the Spring Boot security page!</p>
-                        <br>
-                        <form th:action="@{/logout}" method="post">
-                            <label>Выйти из аккаунта:</label>
-                            <input type="submit" value="Logout"/>
-                        </form>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                            </tr>
+                            </thead>
+                            <tbody th:object="${currentUser}">
+                                <tr>
+                                    <td th:text="${currentUser.id}"></td>
+                                    <td th:text="${currentUser.name}"></td>
+                                    <td th:text="${currentUser.email}"></td>
+                                    <td>
+                                        <ul>
+                                            <li th:each="role : ${currentUser.roles}" th:text="${role.name}"></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
