@@ -83,7 +83,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/updateUser")
-    public String updateUser(@RequestParam("id") int id, @ModelAttribute("user") User user) {
+    public String updateUser(@RequestParam("userId") int id, @ModelAttribute("user") User user) {
         userServiceImpl.update(id, user);
 
         return "redirect:/admin";

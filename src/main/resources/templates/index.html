@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-md-2 bg-white">
                 <ul class="nav flex-column nav-pills">
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${currentUser.roles.contains('ROLE_ADMIN')}">
                         <a class="nav-item nav-link active" id="v-pills-admin-tab" data-bs-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
                     </li>
                     <li class="nav-item">
@@ -140,37 +140,39 @@
                                                         <div class="modal-body">
                                                             <div class="row justify-content-center">
                                                                 <div class="col-6 text-center">
-                                                                    <form th:method="POST" th:action="@{/admin/updateUser}">
+                                                                    <form th:method="POST" th:action="@{/admin/updateUser}" th:object="${user}">
                                                                         <input type="hidden" name="userId" th:value="${user.id}">
                                                                         <div class="form-group">
                                                                             <label for="userId">ID</label>
                                                                             <div class="col-sm-10">
-                                                                                <input class="form-control" type="text" id="userId" placeholder="ID" th:placeholder="${user.id}" th:value="${user.id}" readonly>
+                                                                                <input class="form-control" type="text" id="userId" name="id" th:placeholder="*{id}" th:value="*{id}" readonly>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="name">Name</label>
                                                                             <div class="col-sm-10">
-                                                                                <input class="form-control" type="text" id="name" placeholder="Name" th:placeholder="${user.name}" th:value="${user.name}">
+                                                                                <input class="form-control" type="text" id="name" name="name" th:placeholder="*{name}" th:value="*{name}">
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="email">Email</label>
-                                                                            <di class="col-sm-10">
-                                                                                <input class="form-control" type="email" id="email" placeholder="Email" th:placeholder="${user.email}" th:value="${user.email}">
-                                                                            </di>
+                                                                            <div class="col-sm-10">
+                                                                                <input class="form-control" type="email" id="email" name="email" th:placeholder="*{email}" th:value="*{email}">
+                                                                            </div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="password">Password</label>
-                                                                            <di class="col-sm-10">
-                                                                                <input class="form-control" type="password" id="password" placeholder="Password" th:placeholder="${user.password}" th:value="${user.password}">
-                                                                            </di>
+                                                                            <div class="col-sm-10">
+                                                                                <input class="form-control" type="text" id="password" name="password" th:placeholder="*{password}" th:value="*{password}">
+                                                                            </div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="roles">Role</label>
-                                                                            <select class="col-sm-10">
-                                                                                <option id="roles" th:each="role : ${user.roles}" th:text="${role.name}" th:placeholder="${role.name}" th:value="${role.name}"></option>
-                                                                            </select>
+                                                                            <div class="col-sm-10">
+                                                                                <select class="form-control" id="roles" name="roles" multiple>
+                                                                                    <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}"></option>
+                                                                                </select>
+                                                                            </div>
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
