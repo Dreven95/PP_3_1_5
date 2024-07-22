@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import ru.kata.spring.boot_security.demo.security.CustomUserDetails;
 
 import javax.persistence.*;
