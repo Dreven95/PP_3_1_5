@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
@@ -27,7 +28,7 @@ public class RestController {
     }
 
     @GetMapping("/users")
-    public List<User> showAllUsers() {
+    public List<User> getAllUsers() {
         return userServiceImpl.getAllUsers();
     }
 
@@ -52,6 +53,11 @@ public class RestController {
     public String deleteUser(@PathVariable int id) {
         userServiceImpl.delete(id);
         return "User with ID: " + id + "was deleted";
+    }
+
+    @GetMapping("/roles")
+    public List<Role> getAllRoles() {
+        return roleServiceImpl.getAllRoles();
     }
 
 }
