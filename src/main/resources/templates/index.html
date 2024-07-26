@@ -129,59 +129,43 @@
                                         </td>
                                         <td>
 
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#updateUserModal' + ${user.id}">Update</button>
+                                            <button type="button" class="btn btn-primary edit-user-btn" data-id="1">Update</button>
 
-                                            <div class="modal fade" th:id="'updateUserModal' + ${user.id}" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
+                                            <!-- Modal HTML -->
+                                            <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title p3" id="updateUserModalLabel">Update User</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <h5 class="modal-title" id="userModalLabel">Edit User</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <div class="row justify-content-center">
-                                                                <div class="col-6 text-center">
-                                                                    <form th:method="POST" th:action="@{/admin/updateUser}" th:object="${user}">
-                                                                        <input type="hidden" name="userId" th:value="${user.id}">
-                                                                        <div class="form-group">
-                                                                            <label for="userId">ID</label>
-                                                                            <div class="col-sm-10">
-                                                                                <input class="form-control" type="text" id="userId" name="id" th:placeholder="*{id}" th:value="*{id}" readonly>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="name">Name</label>
-                                                                            <div class="col-sm-10">
-                                                                                <input class="form-control" type="text" id="name" name="name" th:placeholder="*{name}" th:value="*{name}">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="email">Email</label>
-                                                                            <div class="col-sm-10">
-                                                                                <input class="form-control" type="email" id="email" name="email" th:placeholder="*{email}" th:value="*{email}">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="password">Password</label>
-                                                                            <div class="col-sm-10">
-                                                                                <input class="form-control" type="text" id="password" name="password" th:placeholder="*{password}" th:value="*{password}">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="roles">Role</label>
-                                                                            <div class="col-sm-10">
-                                                                                <select class="form-control" id="roles" name="roles" multiple>
-                                                                                    <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}"></option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                            <button type="submit" class="btn btn-primary">Update</button>
-                                                                        </div>
-                                                                    </form>
+                                                            <!-- Form elements go here -->
+                                                            <form id="update-user-form">
+                                                                <input type="hidden" id="userId" name="userId">
+                                                                <div class="form-group">
+                                                                    <label for="name">Name</label>
+                                                                    <input type="text" class="form-control" id="name" name="name">
                                                                 </div>
-                                                            </div>
+                                                                <div class="form-group">
+                                                                    <label for="email">Email</label>
+                                                                    <input type="email" class="form-control" id="email" name="email">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="password">Password</label>
+                                                                    <input type="password" class="form-control" id="password" name="password">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="roles">Roles</label>
+                                                                    <select multiple class="form-control" id="roles" name="roles"></select>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" form="update-user-form" class="btn btn-primary">Save changes</button>
                                                         </div>
                                                     </div>
                                                 </div>
