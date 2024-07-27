@@ -1,61 +1,51 @@
-const URL = "http://localhost:8080/api";
-
 $(document).ready(function() {
-    // Load roles into the select dropdown
-    fetch(URL + '/roles')
-        .then(response => response.json())
-        .then(data => {
-            const rolesSelect = $('#roles');
-            data.forEach(role => {
-                rolesSelect.append(new Option(role.name, role.id));
-            });
+    const URL = "http://localhost:8080/api";
+
+    $.getJSON(URL + '/roles', function(data) {
+        const rolesSelect = $('#updateRoles');
+        data.forEach(role => {
+            rolesSelect.append(new Option(role.name, role.id));
         });
-
-    // Show modal and load user data
-    $(document).on('click', '.edit-user-btn', function() {
-        const userId = $(this).data('id');
-
-        fetch(`/api/user/${userId}`)
-            .then(response => response.json())
-            .then(user => {
-                $('#userId').val(user.id);
-                $('#name').val(user.name);
-                $('#email').val(user.email);
-                $('#password').val(user.password); // Be careful with password handling
-                $('#roles').val(user.roles.map(role => role.id));
-
-                $('#userModal').modal('show');
-            });
     });
 
-    // Submit the form data
+    $('.edit-user-btn').on('click', function() {
+        const userId = $(this).data('id');
+
+        $.getJSON(`${URL}/user/${userId}`, function(user) {
+            $('#updateUserId').val(user.id);
+            $('#updateName').val(user.name);
+            $('#updateEmail').val(user.email);
+            $('#updatePassword').val(user.password);
+            $('#updateRoles').val(user.roles.map(role => role.id));
+        });
+    });
+
     $('#update-user-form').on('submit', function(event) {
         event.preventDefault();
 
         const formData = {
-            id: $('#userId').val(),
-            name: $('#name').val(),
-            email: $('#email').val(),
-            password: $('#password').val(),
-            roles: $('#roles').val()
+            id: $('#updateUserId').val(),
+            name: $('#updateName').val(),
+            email: $('#updateEmail').val(),
+            password: $('#updatePassword').val(),
+            roles: $('#updateRoles').val()
         };
 
-        fetch(URL + '/users', {
+        $.ajax({
+            url: URL + '/users',
             method: 'PUT',
+            contentType: 'application/json',
             headers: {
-                'Content-Type': 'application/json',
                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
             },
-            body: JSON.stringify(formData)
-        })
-            .then(response => response.json())
-            .then(data => {
+            data: JSON.stringify(formData),
+            success: function(data) {
                 console.log('Success:', data);
                 $('#userModal').modal('hide');
-                // Optionally update the user list or UI
-            })
-            .catch(error => {
+            },
+            error: function(error) {
                 console.error('Error:', error);
-            });
+            }
+        });
     });
 });
