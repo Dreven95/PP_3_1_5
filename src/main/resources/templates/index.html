@@ -74,51 +74,38 @@
                                         </td>
                                         <td>
 
-                                            <button type="button" class="btn btn-danger btn-primary" data-bs-toggle="modal" th:data-bs-target="'#deleteUserModal' + ${user.id}">Delete</button>
+                                            <button type="button" class="btn btn-danger delete-user-btn" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                                                Delete
+                                            </button>
 
-                                            <div class="modal fade" th:id="'deleteUserModal' + ${user.id}" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="p3 modal-title" id="deleteUserModalLabel">Delete User</h5>
+                                                            <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <div class="row justify-content-center">
-                                                                <div class="col-6 text-center">
-                                                                    <form th:method="POST" th:action="@{/admin/deleteUser}">
-                                                                        <input type="hidden" name="userId" th:value="${user.id}">
-                                                                        <div class="form-group">
-                                                                            <label for="userId">ID</label>
-                                                                            <div class="col-sm-10">
-                                                                                <input class="form-control" type="text" id="userId" placeholder="ID" th:placeholder="${user.id}" th:value="${user.id}" readonly>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="name">Name</label>
-                                                                            <div class="col-sm-10">
-                                                                                <input class="form-control" type="text" id="name" placeholder="Name" th:placeholder="${user.name}" th:value="${user.name}" readonly>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="email">Email</label>
-                                                                            <di class="col-sm-10">
-                                                                                <input class="form-control" type="email" id="email" placeholder="Email" th:placeholder="${user.email}" th:value="${user.email}" readonly>
-                                                                            </di>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="roles">Role</label>
-                                                                            <select class="col-sm-10" th:readonly="true">
-                                                                                <option id="roles" th:each="role : ${user.roles}" th:text="${role.name}" th:placeholder="${role.name}" th:value="${role.name}" th:readonly="true"></option>
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                                                        </div>
-                                                                    </form>
+                                                            <p>Are you sure you want to delete the user?</p>
+                                                            <form id="delete-user-form">
+                                                                <input type="hidden" id="deleteUserId" name="deleteUserId">
+                                                                <div class="form-group">
+                                                                    <label for="deleteUserName">Name</label>
+                                                                    <input class="form-control" type="text" id="deleteUserName" readonly>
                                                                 </div>
-                                                            </div>
+                                                                <div class="form-group">
+                                                                    <label for="deleteUserEmail">Email</label>
+                                                                    <input class="form-control" type="text" id="deleteUserEmail" readonly>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="deleteUserRoles">Roles</label>
+                                                                    <input class="form-control" type="text" id="deleteUserRoles" readonly>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-danger" id="confirmDeleteUser">Delete</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -153,7 +140,7 @@
                                                                     <input type="password" class="form-control" id="updatePassword" name="updatePassword">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="roles">Roles</label>
+                                                                    <label for="updateRoles">Roles</label>
                                                                     <select multiple class="form-control" id="updateRoles" name="updateRoles"></select>
                                                                 </div>
                                                             </form>
