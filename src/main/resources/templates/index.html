@@ -2,191 +2,89 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="/index.js"></script>
-    <script type="text/javascript" src="/update.js"></script>
 </head>
 <body>
 <div class="container-fluid bg-light">
-        <div class="row">
-            <div class="col-md-12 bg-dark text-white">
-                <nav th:object="${currentUser}" class="navbar navbar-dark bg-dark">
-                    <span class="navbar-text" >
-                        <span th:text="${currentUser.email}"></span> with roles: <span th:each="role :${currentUser.roles}" th:text="${role.name}"></span>
-                    </span>
-                    <form th:action="@{/logout}" method="post">
-                        <input class="btn" type="submit" value="Logout"/>
-                    </form>
-                </nav>
-            </div>
+    <div class="row">
+        <div class="col-md-12 bg-dark text-white">
+            <nav th:object="${currentUser}" class="navbar navbar-dark bg-dark">
+                <span class="navbar-text">
+                    <span th:text="${currentUser.email}"></span> with roles: <span th:each="role :${currentUser.roles}" th:text="${role.name}"></span>
+                </span>
+                <form th:action="@{/logout}" method="post">
+                    <input class="btn" type="submit" value="Logout"/>
+                </form>
+            </nav>
         </div>
-        <div class="row">
-            <div class="col-md-2 bg-light">
-                <br>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 bg-light">
+            <br>
         </div>
-        <div class="row">
-            <div class="col-md-2 bg-white">
-                <ul class="nav flex-column nav-pills">
-                    <li>
-                        <a class="nav-item nav-link active" id="v-pills-admin-tab" data-bs-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-item nav-link" id="v-pills-user-tab" th:href="@{/user}" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-10">
-                <div class="tab-content" id="v-pills-tabContent">
-                    <h1>Admin panel</h1>
-                    <div class="tab-pane fade show active" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-admin-tab">
-                        <nav class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-link active" id="nav-allUsers-tab" data-bs-toggle="tab" href="#nav-allUsers" role="tab" aria-controls="nav-allUsers" aria-selected="true">Users table</a>
-                            <a class="nav-link" id="nav-newUser-tab" data-bs-toggle="tab" href="#nav-newUser" role="tab" aria-controls="nav-newUser" aria-selected="false">New user</a>
-                        </nav>
-                        <div class="tab-content border bg-white" id="nav-tabContent">
-                            <div class="tab-pane active" id="nav-allUsers" role="tabpanel" aria-labelledby="nav-allUsers-tab">
-                                <h5 class="p-3 bg-light"> All users</h5>
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Role</th>
-                                        <th scope="col">Delete</th>
-                                        <th scope="col">Update</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="user: ${allUsers}">
-                                        <td th:text="${user.id}"></td>
-                                        <td th:text="${user.name}"></td>
-                                        <td th:text="${user.email}"></td>
-                                        <td>
-                                            <ul>
-                                                <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
-                                            </ul>
-                                        </td>
-                                        <td>
-
-                                            <button type="button" class="btn btn-danger delete-user-btn" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
-                                                Delete
-                                            </button>
-
-                                            <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p>Are you sure you want to delete the user?</p>
-                                                            <form id="delete-user-form">
-                                                                <input type="hidden" id="deleteUserId" name="deleteUserId">
-                                                                <div class="form-group">
-                                                                    <label for="deleteUserName">Name</label>
-                                                                    <input class="form-control" type="text" id="deleteUserName" readonly>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="deleteUserEmail">Email</label>
-                                                                    <input class="form-control" type="text" id="deleteUserEmail" readonly>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="deleteUserRoles">Roles</label>
-                                                                    <input class="form-control" type="text" id="deleteUserRoles" readonly>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-danger" id="confirmDeleteUser">Delete</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-
-                                            <button type="button" class="btn btn-primary edit-user-btn" data-bs-toggle="modal" data-bs-target="#userModal">
-                                                Update
-                                            </button>
-
-                                            <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="userModalLabel">Modal title</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form id="update-user-form">
-                                                                <input type="hidden" id="updateUserId" name="updateUserId">
-                                                                <div class="form-group">
-                                                                    <label for="updateName">Name</label>
-                                                                    <input type="text" class="form-control" id="updateName" name="updateName">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="updateEmail">Email</label>
-                                                                    <input type="email" class="form-control" id="updateEmail" name="updateEmail">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="updatePassword">Password</label>
-                                                                    <input type="password" class="form-control" id="updatePassword" name="updatePassword">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="updateRoles">Roles</label>
-                                                                    <select multiple class="form-control" id="updateRoles" name="updateRoles"></select>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            <button type="submit" form="update-user-form" class="btn btn-primary">Save changes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane" id="nav-newUser" role="tabpanel" aria-labelledby="nav-newUser-tab">
-                                <h5 class="p3 bg-light border-bottom">Add new user</h5>
-                                <div class="row justify-content-center">
-                                    <div class="col-6 text-center" style="display: flex; align-items: center; justify-content: center">
-                                        <form id="new-user-form" style="flex: auto; max-width: 30% ">
-                                            <div style="width: 100%; display: flex; flex-direction: column;  align-items: center;
-                                justify-content: center">
-                                                <h6 class="card-title" style="margin: 5px 0; text-align: center">Email</h6>
-                                                <input required type="text" name="newUserEmail"
-                                                       class="form-control" placeholder="Email">
-                                                <h6 class="card-title" style="margin: 5px 0; text-align: center">Name</h6>
-                                                <input required type="text" name="newUserName"
-                                                       class="form-control" placeholder="Name">
-                                                <h6 class="card-title" style="margin: 5px 0; text-align: center">Password</h6>
-                                                <input type="password" name="newUserPassword" class="form-control" placeholder="Password"
-                                                       aria-describedby="passwordHelpBlock">
-                                                <small id="passwordHelpBlock" class="form-text text-muted">
-                                                    Your password must contain letters and numbers or symbols and must not contain spaces.
-                                                </small>
-                                                <h6 class="card-title" style="margin: 5px 0; text-align: center">Role</h6>
-                                                <select id="new-roles" required multiple class="form-control" size="2" name="newUserRoles">
-
-                                                </select>
-                                                <button style="margin: 10px 0" type="submit" class="btn btn-lg btn-success">Add new
-                                                    user
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 bg-white">
+            <ul class="nav flex-column nav-pills">
+                <li>
+                    <a class="nav-item nav-link active" id="v-pills-admin-tab" data-bs-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-item nav-link" id="v-pills-user-tab" th:href="@{/user}" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div class="tab-content" id="v-pills-tabContent">
+                <h1>Admin panel</h1>
+                <div class="tab-pane fade show active" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-admin-tab">
+                    <nav class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-link active" id="nav-allUsers-tab" data-bs-toggle="tab" href="#nav-allUsers" role="tab" aria-controls="nav-allUsers" aria-selected="true">Users table</a>
+                        <a class="nav-link" id="nav-newUser-tab" data-bs-toggle="tab" href="#nav-newUser" role="tab" aria-controls="nav-newUser" aria-selected="false">New user</a>
+                    </nav>
+                    <div class="tab-content border bg-white" id="nav-tabContent">
+                        <div class="tab-pane active" id="nav-allUsers" role="tabpanel" aria-labelledby="nav-allUsers-tab">
+                            <h5 class="p-3 bg-light">All users</h5>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Delete</th>
+                                    <th scope="col">Update</th>
+                                </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="nav-newUser" role="tabpanel" aria-labelledby="nav-newUser-tab">
+                            <h5 class="p3 bg-light border-bottom">Add new user</h5>
+                            <div class="row justify-content-center">
+                                <div class="col-6 text-center" style="display: flex; align-items: center; justify-content: center">
+                                    <form id="new-user-form" style="flex: auto; max-width: 30%">
+                                        <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center">
+                                            <h6 class="card-title" style="margin: 5px 0; text-align: center">Email</h6>
+                                            <input required type="text" name="newUserEmail" class="form-control" placeholder="Email">
+                                            <h6 class="card-title" style="margin: 5px 0; text-align: center">Name</h6>
+                                            <input required type="text" name="newUserName" class="form-control" placeholder="Name">
+                                            <h6 class="card-title" style="margin: 5px 0; text-align: center">Password</h6>
+                                            <input type="password" name="newUserPassword" class="form-control" placeholder="Password" aria-describedby="passwordHelpBlock">
+                                            <small id="newPasswordHelpBlock" class="form-text text-muted">
+                                                Your password must contain letters and numbers or symbols and must not contain spaces.
+                                            </small>
+                                            <h6 class="card-title" style="margin: 5px 0; text-align: center">Role</h6>
+                                            <select id="new-roles" required multiple class="form-control" size="2" name="newUserRoles"></select>
+                                            <button style="margin: 10px 0" type="submit" class="btn btn-lg btn-success">Add new user</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -194,7 +92,80 @@
                 </div>
             </div>
         </div>
-        <br>
+    </div>
+
+    <!-- Delete User Modal -->
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="delete-user-form">
+                        <input type="hidden" id="deleteUserId">
+                        <div class="mb-3">
+                            <label for="deleteUserName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="deleteUserName" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="deleteUserEmail" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="deleteUserEmail" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="deleteUserRoles" class="form-label">Roles</label>
+                            <input type="text" class="form-control" id="deleteUserRoles" readonly>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="confirmDeleteUser" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalLabel">Update User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="update-user-form">
+                        <input type="hidden" id="updateUserId">
+                        <div class="mb-3">
+                            <label for="updateName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="updateName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="updateEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updatePassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="updatePassword">
+                            <small id="updatePasswordHelpBlock" class="form-text text-muted">
+                                Leave blank to keep current password.
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateRoles" class="form-label">Roles</label>
+                            <select id="updateRoles" multiple class="form-control" required></select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="saveUserButton" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
