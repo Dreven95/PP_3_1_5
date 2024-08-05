@@ -3,7 +3,10 @@ package ru.kata.spring.boot_security.demo.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleServiceImpl;
@@ -18,6 +21,8 @@ public class RestController {
 
     private UserServiceImpl userServiceImpl;
 
+    private UserDAO userDAO;
+
     private RoleServiceImpl roleServiceImpl;
 
     @Autowired
@@ -28,6 +33,16 @@ public class RestController {
     @Autowired
     public void setRoleServiceImpl(RoleServiceImpl roleServiceImpl) {
         this.roleServiceImpl = roleServiceImpl;
+    }
+
+    @Autowired
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    @GetMapping("/current-user")
+    public User getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        return userDAO.findByEmail(userDetails.getUsername());
     }
 
     @GetMapping("/users")
